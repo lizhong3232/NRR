@@ -45,3 +45,13 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+deform_graph.ply
+deform_graph.obj.mtl
+*.obj
+deform_grap.ply
+*.txt
+*.dll
+*.log
+x64/Release/NRR.tlog/CL.command.1.tlog
+*.tlog
+x64/Release/vc140.pdb
