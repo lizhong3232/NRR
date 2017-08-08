@@ -9,6 +9,7 @@
 #include "quadric_tex_simp.h"
 #include <algorithm>
 #include <opencv2/opencv.hpp>
+#include <time.h>
 
 using namespace vcg;
 using namespace Eigen;
@@ -137,7 +138,22 @@ namespace NRR
 				float coeff_rigid,
 				float coeff_smooth);
 
+			// optimization iteration time
+			int iter_optimization;
 
+			// calculate jacbian matrix
+			MatrixXd Jacobia(
+				MatrixXd a1, 
+				MatrixXd a2, 
+				MatrixXd a3,
+				MatrixXd control_point,
+				MatrixXd source_obj,
+				MatrixXd weight,
+				MatrixXd weightTrans,
+				float coeff_rigid,
+				float coeff_smooth,
+				MatrixXd symbol,
+				MatrixXd target_normal_index);
 
 			// slice function, like matlab B = A(index,:)
 			MatrixXd slice(MatrixXd A, MatrixXd index);

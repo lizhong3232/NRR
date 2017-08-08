@@ -15,6 +15,9 @@ namespace NRR
 		alpha_plane = 1.0;
 		threshold = 0.07;
 		//num_unknown = 12;
+
+		// optimization iteration time
+		iter_optimization = 20;
 	}
 
 	// read mesh , extract deform graph

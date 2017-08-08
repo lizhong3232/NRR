@@ -122,6 +122,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Compute_geodesic.cpp" />
+    <ClCompile Include="Jacobian.cpp" />
     <ClCompile Include="mesh_simplication.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NGP.cpp" />
