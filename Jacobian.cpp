@@ -2,6 +2,10 @@
 
 namespace NRR 
 {
+
+
+
+
 	template<typename Scalar, int RowsAtCompileTime, int ColsAtCompileTime>
 	inline bool saveMatrix(std::string filename, Eigen::Matrix<Scalar, RowsAtCompileTime, ColsAtCompileTime> matrix, bool overwrite)
 	{
@@ -31,34 +35,36 @@ namespace NRR
 
 	}
 
+
+
 	// Run jacobia matrix
-	MatrixXd NGP::Jacobia(
-		MatrixXd a1, 
-		MatrixXd a2, 
-		MatrixXd a3,
-		MatrixXd control_point, 
-		MatrixXd source_obj, 
-		MatrixXd weight, 
-		MatrixXd weightTrans,
+	Eigen::MatrixXd NGP::Jacobia(
+		Eigen::MatrixXd a1,
+		Eigen::MatrixXd a2,
+		Eigen::MatrixXd a3,
+		Eigen::MatrixXd control_point,
+		Eigen::MatrixXd source_obj,
+		Eigen::MatrixXd weight,
+		Eigen::MatrixXd weightTrans,
 		float coeff_rigid, 
 		float coeff_smooth, 
-		MatrixXd symbol, 
-		MatrixXd target_normal_index) 
+		Eigen::MatrixXd symbol,
+		Eigen::MatrixXd target_normal_index)
 	{
 
 		clock_t optimization_time = clock();
 		unsigned long int m_size = control_point.rows() * 6 + pow(control_point.rows(), 2) * 3 + source_obj.rows() * 3 + source_obj.rows();
 
-		std::cout << source_obj.rows() << std::endl;
+		//std::cout << source_obj.rows() << std::endl;
 
 		int variable_num = 12;
 
 		// initial output matrix
-		MatrixXd jac = MatrixXd::Zero(m_size, variable_num * control_point.rows());
+		Eigen::MatrixXd jac = Eigen::MatrixXd::Zero(m_size, variable_num * control_point.rows());
 
-		MatrixXd x1 = a1.row(0); MatrixXd x4 = a2.row(0); MatrixXd x7 = a3.row(0);
-		MatrixXd x2 = a1.row(1); MatrixXd x5 = a2.row(1); MatrixXd x8 = a3.row(1);
-		MatrixXd x3 = a1.row(2); MatrixXd x6 = a2.row(2); MatrixXd x9 = a3.row(2);
+		Eigen::MatrixXd x1 = a1.row(0); Eigen::MatrixXd x4 = a2.row(0); Eigen::MatrixXd x7 = a3.row(0);
+		Eigen::MatrixXd x2 = a1.row(1); Eigen::MatrixXd x5 = a2.row(1); Eigen::MatrixXd x8 = a3.row(1);
+		Eigen::MatrixXd x3 = a1.row(2); Eigen::MatrixXd x6 = a2.row(2); Eigen::MatrixXd x9 = a3.row(2);
 
 		///
 		int index1, index2, index3, index4, index5, index6, index7, index8, index9;
@@ -69,7 +75,6 @@ namespace NRR
 		int seq = 1;
 		int row_index;
 		//---- - rigid part  1----------
-#pragma omp parallel for
 		for (int i = 0; i < control_point.rows(); ++i) {
 
 			index1 = i * variable_num + 0;
@@ -93,7 +98,6 @@ namespace NRR
 		/************* ---- rigid part 2 *********** ***********/
 		//std::cout << jac.topRows(8) << std::endl;
 		seq++;
-#pragma omp parallel for
 		for (int i = 0; i < control_point.rows(); ++i) {
 			row_index = control_point.rows() * (seq - 1) + i;
 
@@ -114,7 +118,6 @@ namespace NRR
 		}
 		/************* ---- rigid part 3  ********** ***********/
 		seq++;
-#pragma omp parallel for
 		for (int i = 0; i < control_point.rows(); ++i) {
 			row_index = control_point.rows() * (seq - 1) + i;
 
@@ -136,7 +139,6 @@ namespace NRR
 
 		/**************** % ----- rigid part  2 ---------- ******************/
 		seq++;
-#pragma omp parallel for
 		for (int i = 0; i < control_point.rows(); ++i) {
 			row_index = control_point.rows() * (seq - 1) + i;
 
@@ -151,7 +153,6 @@ namespace NRR
 		}
 		/******************* rigid 2.2 ***********/
 		seq++;
-#pragma omp parallel for
 		for (int i = 0; i < control_point.rows(); ++i) {
 			row_index = control_point.rows() * (seq - 1) + i;
 
@@ -166,7 +167,6 @@ namespace NRR
 		}
 		/******************* rigid 2.3 ***********/
 		seq++;
-#pragma omp parallel for
 		for (int i = 0; i < control_point.rows(); ++i) {
 			row_index = control_point.rows() * (seq - 1) + i;
 
@@ -186,7 +186,7 @@ namespace NRR
 		/**************************************************************************/
 		seq = seq + 1;
 
-		MatrixXd control_trans = control_point.transpose();
+		Eigen::MatrixXd control_trans = control_point.transpose();
 		int control_point_num = control_point.rows();
 
 		int row_smooth = control_point.rows() * (seq - 1);
@@ -195,10 +195,10 @@ namespace NRR
 		//
 		int index1i, index2i, index3i, index4i, index5i, index6i, index7i, index8i, index9i, index10i, index11i, index12i;
 		int	index1j, index2j, index3j, index4j, index5j, index6j, index7j, index8j, index9j, index10j, index11j, index12j;
-		MatrixXd x_i, x_j, D;
+		Eigen::MatrixXd x_i, x_j, D;
 		double Dx, Dy, Dz;
 		float eff;
-#pragma omp parallel for
+
 		for (int i = 0; i < control_point_num; ++i) {
 			index1i = i * variable_num + 0;
 			index2i = i * variable_num + 1;
@@ -311,7 +311,7 @@ namespace NRR
 			}
 		}
 		//%% E fit_2 term
-		MatrixXd normal_current;
+		Eigen::MatrixXd normal_current;
 		double nx, ny, nz;
 		int flag;
 		for (int i = 0; i < source_obj.rows(); ++i) {
@@ -365,8 +365,16 @@ namespace NRR
 			(double)(clock() - optimization_time)
 			/ CLOCKS_PER_SEC);
 
-		std::string output = "jac.txt";
+		/*std::string output = "jac.txt";
 		saveMatrix(output, jac, 1);
+
+		std::string output2 = "target_normal_index.txt";
+		saveMatrix(output2, target_normal_index, 1);
+
+		std::string output3 = "symbol.txt";
+		saveMatrix(output3, symbol, 1);
+*/
+		return jac;
 	}
 
 

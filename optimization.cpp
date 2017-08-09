@@ -9,7 +9,7 @@ namespace NRR
 
 		// optimization iteration
 		int iter = 1;
-		int coeff_rigid, coeff_smooth;
+		double coeff_rigid, coeff_smooth;
 
 		while (1) 
 		{
@@ -20,7 +20,7 @@ namespace NRR
 				break;
 
 			// optimization iteration main 
-			MatrixXd affineVector_out = gauss_newton(affineVector,
+			Eigen::MatrixXd affineVector_out = gauss_newton(affineVector,
 												control_vertex,
 												source_vertex,
 												target_vertex,

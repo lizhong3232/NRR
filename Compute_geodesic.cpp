@@ -32,16 +32,19 @@ namespace NRR
 		return idx;
 	}
 
-	void NGP::Geodesic_pipeline(std::string source, MatrixXd index_control, int num_neighbor, 
-								MatrixXd& geodesic_table, MatrixXd& r_distance)
+	void NGP::Geodesic_pipeline(std::string source, 
+		Eigen::MatrixXd index_control,
+		int num_neighbor, 						
+		Eigen::MatrixXd& geodesic_table,
+		Eigen::MatrixXd& r_distance)
 	{
 		std::vector<int> index;
 		for (int i = 0; i < index_control.rows(); ++i) {
 			index.push_back(index_control(i,0));
 		}
 
-		MatrixXd geodesic_table_tmp(source_vertex.rows(), index.size());
-		MatrixXd r_distance_tmp(source_vertex.rows(), 1);// output
+		Eigen::MatrixXd geodesic_table_tmp(source_vertex.rows(), index.size());
+		Eigen::MatrixXd r_distance_tmp(source_vertex.rows(), 1);// output
 
 		/********* rest of geodesic pipline*******/
 		auto step_size = 100ul;
@@ -120,8 +123,12 @@ namespace NRR
 	}
 
 
-	void NGP::ComputeGeodesic(std::string source, std::vector<int> index, int num, MatrixXd &geodesic_table,
-		MatrixXd &r_distance, int nearest_geo) {
+	void NGP::ComputeGeodesic(std::string source, 
+		std::vector<int> index, 
+		int num, 
+		Eigen::MatrixXd &geodesic_table,
+		Eigen::MatrixXd &r_distance, 
+		int nearest_geo) {
 
 		MyMesh m;
 

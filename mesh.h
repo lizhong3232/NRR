@@ -1,5 +1,3 @@
-//#ifndef PMVS3_MESH_H
-//#define PMVS3_MESH_H
 #include <boost/shared_ptr.hpp>
 
 #include <vcg/complex/complex.h>

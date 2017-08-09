@@ -3,10 +3,10 @@
 namespace NRR
 {
 	// matlab function equal B = A(index,:);
-	MatrixXd NGP::slice(MatrixXd A, MatrixXd index) 
+	Eigen::MatrixXd NGP::slice(Eigen::MatrixXd A, Eigen::MatrixXd index)
 	{
 		int index_num = index.rows();
-		MatrixXd B(index_num, A.cols());
+		Eigen::MatrixXd B(index_num, A.cols());
 		B.setZero();
 		//
 		for (int i = 0; i < B.rows(); ++i) 
@@ -18,22 +18,22 @@ namespace NRR
 
 	}
 
-	MatrixXd NGP::Weight_smooth_ajacent_geodesic(
-		MatrixXd control_vertex,
-		MatrixXd r_distance,
-		MatrixXd index_control,
-		MatrixXd geodesic_table) 
+	Eigen::MatrixXd NGP::Weight_smooth_ajacent_geodesic(
+		Eigen::MatrixXd control_vertex,
+		Eigen::MatrixXd r_distance,
+		Eigen::MatrixXd index_control,
+		Eigen::MatrixXd geodesic_table)
 	{
 		int control_num = control_vertex.rows();
-		MatrixXd weight_tmp(control_num, control_num);
+		Eigen::MatrixXd weight_tmp(control_num, control_num);
 		weight_tmp.setZero();
 		//int d_2;
 		double d_2,divend_tmp, divide_tmp;
 		//
 		//r = r(index_control,:);
 		//smooth_table = geodesic_table(index_control, :);
-		MatrixXd r            = slice(r_distance, index_control);
-		MatrixXd smooth_table = slice(geodesic_table, index_control);
+		Eigen::MatrixXd r            = slice(r_distance, index_control);
+		Eigen::MatrixXd smooth_table = slice(geodesic_table, index_control);
 		//
 		for (int i = 0; i < control_num; ++i) 
 		{
@@ -50,8 +50,8 @@ namespace NRR
 			}
 		}
 		//
-		MatrixXd div_tmp = weight_tmp.rowwise().sum();
-		MatrixXd n_index_smooth;
+		Eigen::MatrixXd div_tmp = weight_tmp.rowwise().sum();
+		Eigen::MatrixXd n_index_smooth;
 
 		for (int i = 0; i < control_num; ++i) 
 		{
@@ -88,7 +88,7 @@ namespace NRR
 	}
 
 	// check if is inside
-	bool NGP::IsIn(MatrixXd self, double pointer, int& index)
+	bool NGP::IsIn(Eigen::MatrixXd self, double pointer, int& index)
 	{
 		for (int i = 0; i < self.rows(); ++i) 
 		{
@@ -103,18 +103,18 @@ namespace NRR
 
 
 	// compute geodesic weight
-	MatrixXd NGP::WeightFunc_geodesic(MatrixXd source_vertex,
-		MatrixXd control_vertex,
-		MatrixXd r_distance,
-		MatrixXd index_control,
-		MatrixXd geodesic_table)
+	Eigen::MatrixXd NGP::WeightFunc_geodesic(Eigen::MatrixXd source_vertex,
+		Eigen::MatrixXd control_vertex,
+		Eigen::MatrixXd r_distance,
+		Eigen::MatrixXd index_control,
+		Eigen::MatrixXd geodesic_table)
 	{
 		int vertex_num  = source_vertex.rows();
 		int control_num = control_vertex.rows();
 
 		bool flag_in;
 		int index_geo;
-		MatrixXd weight_tmp = MatrixXd::Zero(vertex_num, control_num);
+		Eigen::MatrixXd weight_tmp = Eigen::MatrixXd::Zero(vertex_num, control_num);
 		double d_2, divend_tmp, divide_tmp;
 		//
 		for (int i = 0; i < vertex_num; ++i) 
@@ -141,8 +141,8 @@ namespace NRR
 
 		// normlization
 		//
-		MatrixXd div_tmp = weight_tmp.rowwise().sum();
-		MatrixXd n_index_weight;
+		Eigen::MatrixXd div_tmp = weight_tmp.rowwise().sum();
+		Eigen::MatrixXd n_index_weight;
 
 		for (int i = 0; i < vertex_num; ++i)
 		{

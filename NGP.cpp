@@ -4,7 +4,7 @@ namespace NRR
 {
 	NGP::NGP()
 	{
-		control_face_num = 50;
+		control_face_num = 250;
 		num_neighbor = 4;
 
 		coeff_rigid_tmp  = 100.0;
@@ -75,7 +75,7 @@ namespace NRR
 		tri::io::ExporterPLY<CMeshO>::Save(deform_graph_vcg, "deform_graph.ply", mask, true);
 		// convert to matrixXd version
 		// load to structure
-		MatrixXd vertex_tmp(deform_graph_vcg.VN(), 3);
+		Eigen::MatrixXd vertex_tmp(deform_graph_vcg.VN(), 3);
 		//MatrixXd face_tmp(mesh.FN(), 3);
 		for (int i = 0; i < deform_graph_vcg.VN(); ++i) {
 			vertex_tmp(i, 0) = deform_graph_vcg.vert[i].P()[0];
@@ -117,7 +117,7 @@ namespace NRR
 
 	}
 
-	void NGP::write_obj(MatrixXd vertex) {
+	void NGP::write_obj(Eigen::MatrixXd vertex) {
 		std::ofstream outfile("debug_graph.obj");
 		for (int i = 0; i < vertex.rows(); i++) {
 			outfile <<"v "<< vertex(i, 0) << " " << vertex(i, 1) 
@@ -146,7 +146,7 @@ namespace NRR
 			}
 		}
 		// load to structure
-		MatrixXd vertex_tmp(mesh.VN(), 3);
+		Eigen::MatrixXd vertex_tmp(mesh.VN(), 3);
 		//MatrixXd face_tmp(mesh.FN(), 3);
 		for (int i = 0; i < mesh.VN(); ++i) {
 			vertex_tmp(i, 0) = mesh.vert[i].P()[0];
@@ -288,15 +288,20 @@ namespace NRR
 	}
 
 	// computer normal
-	MatrixXd NGP::computeNormal(CMeshO &target_source)
+	Eigen::MatrixXd NGP::computeNormal(CMeshO &target_source)
 	{
 		if (target_source.fn > 0) {
 			/*tri::UpdateNormal<CMeshO>::PerFaceNormalized(target_source);
 			tri::UpdateNormal<CMeshO>::PerVertexAngleWeighted(target_source);*/
 			//tri::UpdateNormals<CMeshO>::PerVertexPerFace(target_source);
 			tri::UpdateNormal<CMeshO>::PerVertexNormalized(target_source);
+
+			//tri::UpdateNormal<CMeshO>::PerVertexNelsonMaxWeighted(target_source);
+			//tri::UpdateNormal<CMeshO>::NormalizePerVertex(target_source);
+			//vcg::tri::UpdateNormals<CMeshO>::PerVertexPerFace(target_source);
+
 		}
-		MatrixXd normal_tmp = MatrixXd::Zero(target_source.VN(), 3);
+		Eigen::MatrixXd normal_tmp = Eigen::MatrixXd::Zero(target_source.VN(), 3);
 
 		for (int i = 0; i < target_source.VN(); ++i) 
 		{

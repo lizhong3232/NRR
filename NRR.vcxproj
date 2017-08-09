@@ -69,10 +69,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\third_party\vcglib\;..\third_party\eigen\;$(IncludePath)</IncludePath>
+    <IncludePath>..\third_party\vcglib\;..\third_party\eigen-eigen-1306d75b4a21\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>..\third_party\vcglib\;..\third_party\eigen\;..\third_party\boost_1_59_0\;..\third_party\opencv\build\include\;$(IncludePath)</IncludePath>
+    <IncludePath>..\third_party\vcglib\;..\third_party\eigen-eigen-1306d75b4a21\;..\third_party\boost_1_59_0\;..\third_party\opencv\build\include\;$(IncludePath)</IncludePath>
     <LibraryWPath>..\third_party\boost_1_59_0\lib64-msvc-14.0;$(LibraryWPath)</LibraryWPath>
     <LibraryPath>..\third_party\opencv\build\x64\vc14\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
